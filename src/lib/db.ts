@@ -68,6 +68,8 @@ export interface Product {
 export interface Inventory {
   id?: number;
   productId: number;
+  productName?: string;
+  sku?: string;
   type: 'stock_in' | 'stock_out' | 'damage' | 'return' | 'adjustment' | 'sale';
   quantity: number;
   reason: string;

@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { db } from '../lib/db';
+import React, { useEffect, useState } from 'react';
+import { db, type Inventory, type Product } from '../lib/db';
 import { formatCurrency } from '../lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
@@ -7,35 +7,9 @@ import { Input } from '../components/ui/input';
 import { Plus, Minus, Package, AlertTriangle, CheckCircle, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-interface Product {
-  id?: number;
-  name: string;
-  sku: string;
-  stock: number;
-  minStock: number;
-  maxStock: number;
-  costPrice: number;
-  sellPrice: number;
-  categoryId: number;
-  unit: string;
-}
-
-interface InventoryItem {
-  id?: number;
-  productId: number;
-  productName: string;
-  sku: string;
-  type: 'stock_in' | 'stock_out' | 'damage' | 'adjustment';
-  quantity: number;
-  reason: string;
-  date: Date;
-  userId: number;
-}
-
 export default function Inventory() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [inventory, setInventory] = useState<InventoryItem[]>([]);
-  const [transactions, setTransactions] = useState<any[]>([]);
+  const [transactions, setTransactions] = useState<Inventory[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [transactionType, setTransactionType] = useState<'stock_in' | 'stock_out'>('stock_in');
@@ -50,7 +24,6 @@ export default function Inventory() {
     const allProducts = await db.products.toArray();
     const allInventory = await db.inventory.toArray();
     setProducts(allProducts);
-    setInventory(allInventory);
     setTransactions(allInventory.slice().reverse());
   };
 
@@ -89,7 +62,7 @@ export default function Inventory() {
         reason: reason,
         date: new Date(),
         userId: currentUser.id || 1,
-        notes: `${transactionType === 'stock_in' ? 'Added' : 'Removed'} ${qty} ${selectedProduct.unit}`
+        reference: `${transactionType === 'stock_in' ? 'Added' : 'Removed'} ${qty} ${selectedProduct.unit}`
       });
 
       toast.success(`Stock ${transactionType === 'stock_in' ? 'added' : 'removed'} successfully!`);
@@ -196,8 +169,8 @@ export default function Inventory() {
                 <label className="text-sm font-medium">Product</label>
                 <select 
                   className="w-full mt-1 p-2 border rounded-lg"
-                  onChange={(e) => {
-                    const product = products.find(p => p.id === parseInt(e.target.value));
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                    const product = products.find((p: Product) => p.id === parseInt(e.target.value));
                     setSelectedProduct(product || null);
                   }}
                 >
@@ -234,7 +207,7 @@ export default function Inventory() {
                 <Input 
                   type="number" 
                   value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuantity(e.target.value)}
                   className="mt-1"
                   placeholder="Enter quantity"
                 />
@@ -244,7 +217,7 @@ export default function Inventory() {
                 <label className="text-sm font-medium">Reason</label>
                 <Input 
                   value={reason}
-                  onChange={(e) => setReason(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setReason(e.target.value)}
                   className="mt-1"
                   placeholder="e.g., New shipment received"
                 />
