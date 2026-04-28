@@ -91,7 +91,7 @@ export default function Sales() {
         </div>
         <div class="info">
           <p><strong>Invoice:</strong> ${sale.invoiceNo}</p>
-          <p><strong>Date:</strong> ${formatDateTime(sale.createdAt)}</p>
+          <p><strong>Date:</strong> ${sale.createdAt ? formatDateTime(sale.createdAt) : 'N/A'}</p>
           <p><strong>Customer:</strong> ${customerName}</p>
           <p><strong>Payment:</strong> ${sale.paymentMethod.toUpperCase()}</p>
         </div>

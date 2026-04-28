@@ -60,7 +60,7 @@ export async function login(username: string, password: string): Promise<AuthUse
     await db.sessions.add({
       userId: user.id!,
       loginAt: new Date(),
-      ip: null
+      ip: ''
     });
 
     return sessionUser;
