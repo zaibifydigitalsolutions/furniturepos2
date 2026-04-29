@@ -10,8 +10,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: 'FurniCraft POS',
-        short_name: 'FurniCraft',
+        name: 'Abduallah Furniture House',
+        short_name: 'AFH POS',
         description: 'Professional Furniture Business Point of Sale',
         theme_color: '#1C1917',
         background_color: '#FAFAF9',

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search, Bell, User } from 'lucide-react';
+import { Search, Bell, User, Download } from 'lucide-react';
 import { useAuthStore } from '../../stores/authStore';
 import { getInitials } from '../../lib/utils';
 import { format } from 'date-fns';
@@ -7,18 +7,48 @@ import { format } from 'date-fns';
 export default function TopBar() {
   const { user } = useAuthStore();
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [installPrompt, setInstallPrompt] = useState<any>(null);
+  const [showInstallBtn, setShowInstallBtn] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    const handler = (e: Event) => {
+      e.preventDefault();
+      setInstallPrompt(e);
+      setShowInstallBtn(true);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  const handleInstall = async () => {
+    if (!installPrompt) return;
+    (installPrompt as any).prompt();
+    const { outcome } = await (installPrompt as any).userChoice;
+    if (outcome === 'accepted') {
+      setShowInstallBtn(false);
+    }
+    setInstallPrompt(null);
+  };
+
   return (
     <header className="bg-white border-b border-border h-16 flex items-center justify-between px-6">
       <div className="flex items-center gap-4">
         <h1 className="text-xl font-display font-semibold text-primary">
-          FurniCraft POS
+          Abduallah Furniture House
         </h1>
+        {showInstallBtn && (
+          <button
+            onClick={handleInstall}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-accent text-primary text-xs font-bold rounded-lg hover:bg-accent-hover transition-colors"
+          >
+            <Download size={14} /> Install App
+          </button>
+        )}
       </div>
 
       <div className="flex items-center gap-4">
