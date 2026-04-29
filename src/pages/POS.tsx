@@ -6,7 +6,7 @@ import { formatCurrency, generateInvoiceNumber } from '../lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
-import { Search, Plus, Minus, Trash2, Printer, Save, CreditCard } from 'lucide-react';
+import { Search, Plus, Minus, Trash2, Printer, Save, CreditCard, Download } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function POS() {
@@ -18,6 +18,8 @@ export default function POS() {
   const [selectedCustomer, setSelectedCustomer] = useState<number | undefined>();
   const [newCustomer, setNewCustomer] = useState({ name: '', phone: '', address: '' });
   const [isNewCustomer, setIsNewCustomer] = useState(false);
+  const [installPrompt, setInstallPrompt] = useState<any>(null);
+  const [showInstallBtn, setShowInstallBtn] = useState(false);
   
   const {
     items,
@@ -46,6 +48,26 @@ export default function POS() {
   useEffect(() => {
     loadData();
   }, []);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      e.preventDefault();
+      setInstallPrompt(e);
+      setShowInstallBtn(true);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  const handleInstall = async () => {
+    if (!installPrompt) return;
+    (installPrompt as any).prompt();
+    const { outcome } = await (installPrompt as any).userChoice;
+    if (outcome === 'accepted') {
+      setShowInstallBtn(false);
+    }
+    setInstallPrompt(null);
+  };
 
   const loadData = async () => {
     const allProducts = await db.products.where('status').equals('active').toArray();
@@ -330,6 +352,14 @@ export default function POS() {
               <option key={cat.id} value={cat.id}>{cat.icon} {cat.name}</option>
             ))}
           </select>
+          {showInstallBtn && (
+            <button
+              onClick={handleInstall}
+              className="flex items-center gap-1.5 px-3 py-2 bg-accent text-primary text-xs font-bold rounded-lg hover:bg-accent-hover transition-colors"
+            >
+              <Download size={14} /> Install App
+            </button>
+          )}
         </div>
 
         {/* Products */}
