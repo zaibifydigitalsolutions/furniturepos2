@@ -16,6 +16,8 @@ export default function POS() {
   const [searchQuery, setSearchQuery] = useState('');
   const [customers, setCustomers] = useState<any[]>([]);
   const [selectedCustomer, setSelectedCustomer] = useState<number | undefined>();
+  const [newCustomer, setNewCustomer] = useState({ name: '', phone: '', address: '' });
+  const [isNewCustomer, setIsNewCustomer] = useState(false);
   
   const {
     items,
@@ -83,6 +85,29 @@ export default function POS() {
       return;
     }
 
+    let customerId = selectedCustomer;
+
+    if (isNewCustomer) {
+      if (!newCustomer.name || !newCustomer.phone || !newCustomer.address) {
+        toast.error('Please fill customer name, phone, and address');
+        return;
+      }
+      try {
+        customerId = await db.customers.add({
+          name: newCustomer.name,
+          phone: newCustomer.phone,
+          address: newCustomer.address,
+          createdAt: new Date(),
+        });
+      } catch (error) {
+        toast.error('Failed to create customer');
+        return;
+      }
+    } else if (!customerId) {
+      toast.error('Please select a customer or add new customer details');
+      return;
+    }
+
     try {
       const subtotal = getSubtotal();
       const discount = getTotalDiscount();
@@ -92,7 +117,7 @@ export default function POS() {
 
       const sale = {
         invoiceNo,
-        customerId: selectedCustomer,
+        customerId,
         userId: user!.id,
         items,
         subtotal,
@@ -146,6 +171,8 @@ export default function POS() {
       clearCart();
       setSelectedCustomer(undefined);
       setAmountReceived(0);
+      setNewCustomer({ name: '', phone: '', address: '' });
+      setIsNewCustomer(false);
     } catch (error) {
       toast.error('Failed to complete sale');
       console.error(error);
@@ -343,16 +370,55 @@ export default function POS() {
           
           <CardContent className="flex-1 flex flex-col overflow-hidden">
             {/* Customer Selection */}
-            <select
-              value={selectedCustomer || ''}
-              onChange={(e) => setCustomerId(e.target.value ? Number(e.target.value) : undefined)}
-              className="mb-4 px-3 py-2 border border-border rounded-lg"
-            >
-              <option value="">Walk-in Customer</option>
-              {customers.map(c => (
-                <option key={c.id} value={c.id}>{c.name} - {c.phone}</option>
-              ))}
-            </select>
+            <div className="mb-4">
+              <div className="flex gap-2 mb-2">
+                <button
+                  onClick={() => {setIsNewCustomer(false);setSelectedCustomer(undefined);}}
+                  className={`flex-1 px-3 py-1.5 text-xs font-medium rounded ${!isNewCustomer ? 'bg-accent text-primary' : 'bg-surface-2 text-text-secondary'}`}
+                >
+                  Existing Customer
+                </button>
+                <button
+                  onClick={() => {setIsNewCustomer(true);setSelectedCustomer(undefined);}}
+                  className={`flex-1 px-3 py-1.5 text-xs font-medium rounded ${isNewCustomer ? 'bg-accent text-primary' : 'bg-surface-2 text-text-secondary'}`}
+                >
+                  New Customer
+                </button>
+              </div>
+              {!isNewCustomer ? (
+                <select
+                  value={selectedCustomer || ''}
+                  onChange={(e) => {setSelectedCustomer(e.target.value ? Number(e.target.value) : undefined);setCustomerId(e.target.value ? Number(e.target.value) : undefined);}}
+                  className="w-full px-3 py-2 border border-border rounded-lg"
+                >
+                  <option value="">Select Customer *</option>
+                  {customers.map(c => (
+                    <option key={c.id} value={c.id}>{c.name} - {c.phone}</option>
+                  ))}
+                </select>
+              ) : (
+                <div className="space-y-2">
+                  <Input
+                    placeholder="Customer Name *"
+                    value={newCustomer.name}
+                    onChange={(e) => setNewCustomer({...newCustomer, name: e.target.value})}
+                    className="text-sm"
+                  />
+                  <Input
+                    placeholder="Phone Number *"
+                    value={newCustomer.phone}
+                    onChange={(e) => setNewCustomer({...newCustomer, phone: e.target.value})}
+                    className="text-sm"
+                  />
+                  <Input
+                    placeholder="Address *"
+                    value={newCustomer.address}
+                    onChange={(e) => setNewCustomer({...newCustomer, address: e.target.value})}
+                    className="text-sm"
+                  />
+                </div>
+              )}
+            </div>
 
             {/* Cart Items */}
             <div className="flex-1 overflow-y-auto space-y-3">
