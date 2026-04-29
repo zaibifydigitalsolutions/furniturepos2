@@ -87,9 +87,10 @@ export default function POS() {
       const discount = getTotalDiscount();
       const total = getTotal();
       const change = getChange();
+      const invoiceNo = generateInvoiceNumber();
 
       const sale = {
-        invoiceNo: generateInvoiceNumber(),
+        invoiceNo,
         customerId: selectedCustomer,
         userId: user!.id,
         items,
@@ -123,6 +124,23 @@ export default function POS() {
         });
       }
 
+      // Get customer details
+      const customer = customers.find(c => c.id === selectedCustomer);
+      
+      // Print receipt
+      printReceipt({
+        invoiceNo,
+        items,
+        subtotal,
+        discount,
+        total,
+        paymentMethod,
+        amountReceived: paymentMethod === 'cash' ? amountReceived : total,
+        change,
+        customer,
+        createdAt: new Date(),
+      });
+
       toast.success('Sale completed successfully!');
       clearCart();
       setSelectedCustomer(undefined);
@@ -130,6 +148,94 @@ export default function POS() {
     } catch (error) {
       toast.error('Failed to complete sale');
       console.error(error);
+    }
+  };
+
+  const printReceipt = (saleData: any) => {
+    const customer = saleData.customer;
+    const customerName = customer ? customer.name : 'Walk-in Customer';
+    const customerAddress = customer ? (customer.address || 'N/A') : 'N/A';
+    const customerPhone = customer ? (customer.phone || 'N/A') : 'N/A';
+    
+    const itemsHtml = saleData.items.map((item: any) => `
+      <tr>
+        <td style="text-align:left;padding:4px 0;">${item.name}</td>
+        <td style="text-align:center;padding:4px 0;">${item.quantity}</td>
+        <td style="text-align:right;padding:4px 0;">${formatCurrency(item.price)}</td>
+        <td style="text-align:right;padding:4px 0;">${formatCurrency(item.total)}</td>
+      </tr>
+    `).join('');
+
+    const receiptHtml = `
+      <html>
+      <head>
+        <style>
+          @media print {
+            body { margin: 0; padding: 10px; font-family: Arial, sans-serif; font-size: 12px; }
+            .header { text-align: center; border-bottom: 1px dashed #000; padding-bottom: 10px; margin-bottom: 10px; }
+            .shop-name { font-size: 16px; font-weight: bold; }
+            .shop-address { font-size: 11px; color: #555; }
+            .info-row { display: flex; justify-content: space-between; margin: 4px 0; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <div class="shop-name">Abduallah Furniture House</div>
+          <div class="shop-address">Your Store Address Here</div>
+          <div class="shop-address">Tel: +92-XXX-XXXXXXX</div>
+        </div>
+        
+        <div class="info-row"><strong>Invoice:</strong> ${saleData.invoiceNo}</div>
+        <div class="info-row"><strong>Date:</strong> ${new Date(saleData.createdAt).toLocaleString()}</div>
+        <div class="info-row"><strong>Customer:</strong> ${customerName}</div>
+        <div class="info-row"><strong>Address:</strong> ${customerAddress}</div>
+        <div class="info-row"><strong>Phone:</strong> ${customerPhone}</div>
+        <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;">
+        
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="border-bottom: 1px solid #000;">
+              <th style="text-align: left;">Item</th>
+              <th style="text-align: center;">Qty</th>
+              <th style="text-align: right;">Price</th>
+              <th style="text-align: right;">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${itemsHtml}
+          </tbody>
+        </table>
+        
+        <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;">
+        
+        <div class="info-row"><strong>Subtotal:</strong> ${formatCurrency(saleData.subtotal)}</div>
+        <div class="info-row"><strong>Discount:</strong> -${formatCurrency(saleData.discount)}</div>
+        <div class="info-row" style="font-size: 14px; font-weight: bold;"><strong>Total:</strong> ${formatCurrency(saleData.total)}</div>
+        <div class="info-row"><strong>Payment:</strong> ${saleData.paymentMethod.toUpperCase()}</div>
+        ${saleData.paymentMethod === 'cash' ? `
+        <div class="info-row"><strong>Received:</strong> ${formatCurrency(saleData.amountReceived)}</div>
+        <div class="info-row"><strong>Change:</strong> ${formatCurrency(saleData.change)}</div>
+        ` : ''}
+        
+        <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;">
+        <div style="text-align: center; font-size: 11px; margin-top: 10px;">
+          <p>Thank you for shopping with us!</p>
+          <p>Abduallah Furniture House</p>
+        </div>
+      </body>
+      </html>
+    `;
+
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(receiptHtml);
+      printWindow.document.close();
+      printWindow.focus();
+      setTimeout(() => {
+        printWindow.print();
+        printWindow.close();
+      }, 250);
     }
   };
 

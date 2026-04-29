@@ -41,9 +41,9 @@ export default function Login() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-display font-bold text-accent mb-2">
-            🪑 FurniCraft POS
+            🪑 Abduallah Furniture House
           </h1>
-          <p className="text-sidebar-text">Premium Furniture Business Management</p>
+          <p className="text-sidebar-text">Premium Furniture Management System</p>
         </div>
 
         <Card className="bg-white/95 backdrop-blur-sm shadow-xl">
@@ -113,7 +113,7 @@ export default function Login() {
         </Card>
 
         <p className="text-center text-sidebar-text/60 text-sm mt-6">
-          © 2024 FurniCraft Furniture. All rights reserved.
+          © 2024 Abduallah Furniture House. All rights reserved.
         </p>
       </div>
     </div>

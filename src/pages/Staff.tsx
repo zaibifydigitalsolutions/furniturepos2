@@ -18,6 +18,7 @@ export default function Staff() {
     password: '',
     email: '',
     phone: '',
+    cnic: '',
     role: 'cashier',
     status: 'active'
   });
@@ -39,6 +40,7 @@ export default function Staff() {
       password: '',
       email: '',
       phone: '',
+      cnic: '',
       role: 'cashier',
       status: 'active',
       permissions: ['pos']
@@ -53,6 +55,7 @@ export default function Staff() {
       username: member.username,
       email: member.email,
       phone: member.phone,
+      cnic: member.cnic,
       role: member.role,
       status: member.status,
       permissions: member.permissions
@@ -182,6 +185,15 @@ export default function Staff() {
                 />
               </div>
               <div>
+                <label className="text-sm font-medium">CNIC (National ID)</label>
+                <Input 
+                  value={formData.cnic || ''} 
+                  onChange={(e) => setFormData({...formData, cnic: e.target.value})}
+                  placeholder="e.g., 35201-1234567-8"
+                  className="mt-1"
+                />
+              </div>
+              <div>
                 <label className="text-sm font-medium">Role</label>
                 <select 
                   className="w-full mt-1 p-2 border rounded-lg bg-white"
@@ -246,6 +258,7 @@ export default function Staff() {
                 <div><strong>Username:</strong> {viewingMember.username}</div>
                 <div><strong>Email:</strong> {viewingMember.email}</div>
                 <div><strong>Phone:</strong> {viewingMember.phone}</div>
+                <div><strong>CNIC:</strong> {viewingMember.cnic || 'N/A'}</div>
                 <div><strong>Status:</strong> <span className={viewingMember.status === 'active' ? 'text-success' : 'text-danger'}>{viewingMember.status}</span></div>
               </div>
               <div className="pt-2">

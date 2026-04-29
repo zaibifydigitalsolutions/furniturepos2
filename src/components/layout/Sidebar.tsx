@@ -63,8 +63,8 @@ export default function Sidebar() {
           <span className="text-2xl">🪑</span>
           {!collapsed && (
             <div>
-              <h1 className="font-display font-bold text-lg text-accent">FurniCraft</h1>
-              <p className="text-xs text-sidebar-text/60">POS System</p>
+              <h1 className="font-display font-bold text-lg text-accent">Abduallah</h1>
+              <p className="text-xs text-sidebar-text/60">Furniture House</p>
             </div>
           )}
         </div>
