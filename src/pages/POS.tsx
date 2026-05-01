@@ -377,7 +377,7 @@ export default function POS() {
             >
               <CardContent className="p-4">
                 <div className="aspect-square bg-surface-2 rounded-lg mb-3 flex items-center justify-center">
-                  <img src="/favicon.svg" alt="Product" className="w-16 h-16 opacity-50" />
+                  <img src="/logo.png" alt="Product" className="w-16 h-16 opacity-50" />
                 </div>
                 <h3 className="font-medium text-sm line-clamp-2">{product.name}</h3>
                 <p className="text-xs text-text-secondary">{product.sku}</p>

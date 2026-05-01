@@ -41,7 +41,7 @@ export default function Login() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
-            <img src="/favicon.svg" alt="Abduallah Furniture House" className="w-24 h-24" />
+            <img src="/logo.png" alt="Abduallah Furniture House" className="w-24 h-24" />
           </div>
           <h1 className="text-3xl font-display font-bold text-accent mb-2">
             Abduallah Furniture House
