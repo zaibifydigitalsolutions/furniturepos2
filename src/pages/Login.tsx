@@ -40,8 +40,11 @@ export default function Login() {
     <div className="min-h-screen bg-primary flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-display font-bold text-accent mb-2">
-            🪑 Abduallah Furniture House
+          <div className="flex justify-center mb-4">
+            <img src="/favicon.svg" alt="Abduallah Furniture House" className="w-24 h-24" />
+          </div>
+          <h1 className="text-3xl font-display font-bold text-accent mb-2">
+            Abduallah Furniture House
           </h1>
           <p className="text-sidebar-text">Premium Furniture Management System</p>
         </div>

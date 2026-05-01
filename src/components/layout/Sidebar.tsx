@@ -60,7 +60,7 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="p-4 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <span className="text-2xl">🪑</span>
+          <img src="/favicon.svg" alt="Logo" className="w-10 h-10" />
           {!collapsed && (
             <div>
               <h1 className="font-display font-bold text-lg text-accent">Abduallah</h1>

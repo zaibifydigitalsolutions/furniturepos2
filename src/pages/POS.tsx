@@ -79,10 +79,15 @@ export default function POS() {
   };
 
   const filteredProducts = products.filter(product => {
-    const matchesCategory = selectedCategory === null || product.categoryId === selectedCategory;
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          product.sku.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+    // When searching, show all matching products regardless of category
+    // When not searching, filter by selected category
+    if (searchQuery.trim() !== '') {
+      return matchesSearch;
+    }
+    const matchesCategory = selectedCategory === null || product.categoryId === selectedCategory;
+    return matchesCategory;
   });
 
   const handleAddToCart = (product: any) => {
@@ -371,8 +376,8 @@ export default function POS() {
               onClick={() => handleAddToCart(product)}
             >
               <CardContent className="p-4">
-                <div className="aspect-square bg-surface-2 rounded-lg mb-3 flex items-center justify-center text-4xl">
-                  🪑
+                <div className="aspect-square bg-surface-2 rounded-lg mb-3 flex items-center justify-center">
+                  <img src="/favicon.svg" alt="Product" className="w-16 h-16 opacity-50" />
                 </div>
                 <h3 className="font-medium text-sm line-clamp-2">{product.name}</h3>
                 <p className="text-xs text-text-secondary">{product.sku}</p>
