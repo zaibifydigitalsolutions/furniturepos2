@@ -1,8 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useEffect } from 'react';
 import { useAuthStore } from './stores/authStore';
-import { getCurrentUser } from './lib/auth';
 import Login from './pages/Login';
 import AppLayout from './components/layout/AppLayout';
 import Dashboard from './pages/Dashboard';
@@ -36,14 +34,7 @@ function NotFound() {
 }
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { setUser, isAuthenticated } = useAuthStore();
-  
-  useEffect(() => {
-    const user = getCurrentUser();
-    if (user) {
-      setUser(user);
-    }
-  }, [setUser]);
+  const { isAuthenticated } = useAuthStore();
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;

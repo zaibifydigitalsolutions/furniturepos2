@@ -13,15 +13,6 @@ export interface AuthUser {
   avatar?: string;
 }
 
-export interface SessionData {
-  user: AuthUser;
-  token: string;
-  expiresAt: number;
-}
-
-const SESSION_KEY = 'furnicraft_session';
-const SESSION_DURATION = 30 * 60 * 1000; // 30 minutes
-
 export async function login(username: string, password: string): Promise<AuthUser | null> {
   try {
     const user = await db.users.where('username').equals(username).first();
@@ -36,7 +27,7 @@ export async function login(username: string, password: string): Promise<AuthUse
       return null;
     }
 
-    // Create session
+    // Create user object (session not persisted - login required every time)
     const sessionUser: AuthUser = {
       id: user.id!,
       name: user.name,
@@ -48,15 +39,7 @@ export async function login(username: string, password: string): Promise<AuthUse
       avatar: user.avatar
     };
 
-    const sessionData: SessionData = {
-      user: sessionUser,
-      token: generateToken(),
-      expiresAt: Date.now() + SESSION_DURATION
-    };
-
-    localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
-
-    // Log the session
+    // Log the session to database only
     await db.sessions.add({
       userId: user.id!,
       loginAt: new Date(),
@@ -71,31 +54,17 @@ export async function login(username: string, password: string): Promise<AuthUse
 }
 
 export function logout(): void {
-  localStorage.removeItem(SESSION_KEY);
+  // Session is not persisted to localStorage, no cleanup needed
 }
 
 export function getCurrentUser(): AuthUser | null {
-  try {
-    const sessionStr = localStorage.getItem(SESSION_KEY);
-    if (!sessionStr) return null;
-
-    const session: SessionData = JSON.parse(sessionStr);
-
-    // Check if session is expired
-    if (Date.now() > session.expiresAt) {
-      logout();
-      return null;
-    }
-
-    return session.user;
-  } catch (error) {
-    console.error('Get current user error:', error);
-    return null;
-  }
+  // Session is not persisted - user must login every time
+  return null;
 }
 
 export function isAuthenticated(): boolean {
-  return getCurrentUser() !== null;
+  // Session is not persisted - user must login every time
+  return false;
 }
 
 export function hasPermission(permission: string): boolean {
@@ -116,10 +85,6 @@ export function hasAnyPermission(permissions: string[]): boolean {
   if (user.permissions.includes('all')) return true;
   
   return permissions.some(p => user.permissions.includes(p));
-}
-
-export function generateToken(): string {
-  return Math.random().toString(36).substring(2) + Date.now().toString(36);
 }
 
 export async function changePassword(userId: number, currentPassword: string, newPassword: string): Promise<boolean> {

@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 import type { AuthUser } from '../lib/auth';
 
 interface AuthState {
@@ -10,15 +9,10 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>()(
-  persist(
-    (set) => ({
-      user: null,
-      isAuthenticated: false,
-      setUser: (user) => set({ user, isAuthenticated: !!user }),
-      logout: () => set({ user: null, isAuthenticated: false }),
-    }),
-    {
-      name: 'furnicraft-auth',
-    }
-  )
+  (set) => ({
+    user: null,
+    isAuthenticated: false,
+    setUser: (user) => set({ user, isAuthenticated: !!user }),
+    logout: () => set({ user: null, isAuthenticated: false }),
+  })
 );

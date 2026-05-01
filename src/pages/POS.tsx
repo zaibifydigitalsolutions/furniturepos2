@@ -208,7 +208,7 @@ export default function POS() {
     const customerPhone = customer ? (customer.phone || 'N/A') : 'N/A';
 
     const itemsHtml = saleData.items.map((item: any) => {
-      const discLine = item.discount > 0 ? `<div style="font-size:8px;font-weight:900;color:#555;">Disc: ${item.discount}% | After: ${formatCurrency(item.total)}</div>` : '';
+      const discLine = item.discount > 0 ? `<div style="font-size:8px;font-weight:900;color:#555;">Disc: -${formatCurrency(item.discount)} | After: ${formatCurrency(item.total)}</div>` : '';
       return `
       <tr>
         <td style="text-align:left;padding:2px 0;font-size:10px;font-weight:900;">${item.name}${discLine}</td>
@@ -473,18 +473,18 @@ export default function POS() {
                     <span className="font-bold">{formatCurrency(item.total)}</span>
                   </div>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xs text-text-secondary">Disc %:</span>
+                    <span className="text-xs text-text-secondary">Disc (PKR):</span>
                     <input
                       type="number"
                       min="0"
-                      max="100"
+                      max={item.price * item.quantity}
                       value={item.discount || 0}
                       onChange={(e) => updateItemDiscount(item.productId, Number(e.target.value))}
-                      className="w-16 h-6 text-xs px-1 border rounded"
+                      className="w-20 h-6 text-xs px-1 border rounded"
                     />
                     {item.discount > 0 && (
                       <span className="text-xs text-success">
-                        {formatCurrency(item.price * (1 - item.discount / 100))} each
+                        -{formatCurrency(item.discount)}
                       </span>
                     )}
                   </div>
@@ -499,7 +499,7 @@ export default function POS() {
                 <span>{formatCurrency(subtotal)}</span>
               </div>
               {(() => {
-                const itemDiscTotal = items.reduce((sum, item) => sum + (item.price * item.quantity * (item.discount || 0) / 100), 0);
+                const itemDiscTotal = items.reduce((sum, item) => sum + (item.discount || 0), 0);
                 if (itemDiscTotal > 0) {
                   return (
                     <div className="flex justify-between text-sm">

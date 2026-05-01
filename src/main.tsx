@@ -10,6 +10,11 @@ db.on('populate', () => {
   seedDatabase();
 });
 
+// Also seed on every startup to ensure new users are added
+db.open().then(() => {
+  seedDatabase();
+}).catch(console.error);
+
 // Register service worker for PWA
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
   navigator.serviceWorker.register('/sw.js').then((registration) => {

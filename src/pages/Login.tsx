@@ -98,17 +98,6 @@ export default function Login() {
                 {loading ? 'Signing in...' : 'Sign In'}
               </Button>
             </form>
-
-            <div className="mt-6 p-4 bg-surface-2 rounded-lg">
-              <p className="text-sm font-semibold text-text-primary mb-2">
-                Demo Credentials:
-              </p>
-              <div className="text-xs text-text-secondary space-y-1">
-                <p><strong>Super Admin:</strong> superadmin / Admin@1234</p>
-                <p><strong>Admin:</strong> ahmed.admin / Admin@5678</p>
-                <p><strong>Cashier:</strong> ali.cashier / Staff@1234</p>
-              </div>
-            </div>
           </CardContent>
         </Card>
 

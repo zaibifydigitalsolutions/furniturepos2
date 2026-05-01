@@ -35,7 +35,7 @@ interface CartState {
 export const useCartStore = create<CartState>((set, get) => ({
   items: [],
   discount: 0,
-  discountType: 'percentage',
+  discountType: 'fixed',
   paymentMethod: 'cash',
   amountReceived: 0,
 
@@ -46,7 +46,7 @@ export const useCartStore = create<CartState>((set, get) => ({
         return {
           items: state.items.map((i) =>
             i.productId === item.productId
-              ? { ...i, quantity: i.quantity + item.quantity, total: (i.quantity + item.quantity) * i.price * (1 - i.discount / 100) }
+              ? { ...i, quantity: i.quantity + item.quantity, total: (i.quantity + item.quantity) * i.price - i.discount }
               : i
           ),
         };
@@ -65,7 +65,7 @@ export const useCartStore = create<CartState>((set, get) => ({
     set((state) => ({
       items: state.items.map((i) =>
         i.productId === productId
-          ? { ...i, quantity, total: quantity * i.price * (1 - i.discount / 100) }
+          ? { ...i, quantity, total: quantity * i.price - i.discount }
           : i
       ),
     }));
@@ -75,7 +75,7 @@ export const useCartStore = create<CartState>((set, get) => ({
     set((state) => ({
       items: state.items.map((i) =>
         i.productId === productId
-          ? { ...i, discount, total: i.quantity * i.price * (1 - discount / 100) }
+          ? { ...i, discount, total: i.quantity * i.price - discount }
           : i
       ),
     }));
@@ -86,7 +86,7 @@ export const useCartStore = create<CartState>((set, get) => ({
       items: [],
       customerId: undefined,
       discount: 0,
-      discountType: 'percentage',
+      discountType: 'fixed',
       paymentMethod: 'cash',
       amountReceived: 0,
     });
@@ -105,11 +105,11 @@ export const useCartStore = create<CartState>((set, get) => ({
 
   getTotalDiscount: () => {
     const state = get();
-    const subtotal = state.getSubtotal();
-    if (state.discountType === 'percentage') {
-      return subtotal * (state.discount / 100);
-    }
-    return Math.min(state.discount, subtotal);
+    // Item discounts (fixed amounts)
+    const itemDiscounts = state.items.reduce((sum, item) => sum + (item.discount || 0), 0);
+    // Order discount (fixed amount)
+    const orderDiscount = Math.min(state.discount, state.getSubtotal() - itemDiscounts);
+    return itemDiscounts + orderDiscount;
   },
 
   getTotal: () => {

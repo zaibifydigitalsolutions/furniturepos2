@@ -3,58 +3,36 @@ import { db, type User, type Category, type Product } from './db';
 
 const defaultUsers: User[] = [
   {
-    name: 'Super Admin',
-    username: 'superadmin',
-    password: bcrypt.hashSync('Admin@1234', 10),
-    role: 'super_admin',
-    email: 'superadmin@furnicraft.com',
+    name: 'Saadullah',
+    username: 'Saadullah',
+    password: bcrypt.hashSync('saad1234', 10),
+    role: 'admin',
+    email: 'saadullah@furnicraft.com',
     phone: '+92-300-0000001',
     status: 'active',
-    permissions: ['all'],
+    permissions: ['dashboard', 'pos', 'products', 'inventory', 'reports', 'staff', 'customers'],
     createdAt: new Date()
   },
   {
-    name: 'Ahmed Hassan',
-    username: 'ahmed.admin',
-    password: bcrypt.hashSync('Admin@5678', 10),
+    name: 'Samiullah',
+    username: 'Samiullah',
+    password: bcrypt.hashSync('sami0987', 10),
     role: 'admin',
-    email: 'ahmed@furnicraft.com',
+    email: 'samiullah@furnicraft.com',
     phone: '+92-300-0000002',
     status: 'active',
     permissions: ['dashboard', 'pos', 'products', 'inventory', 'reports', 'staff', 'customers'],
     createdAt: new Date()
   },
   {
-    name: 'Sara Khan',
-    username: 'sara.admin',
-    password: bcrypt.hashSync('Admin@9012', 10),
+    name: 'Abdullah',
+    username: 'Abdullah',
+    password: bcrypt.hashSync('abd4567', 10),
     role: 'admin',
-    email: 'sara@furnicraft.com',
+    email: 'abdullah@furnicraft.com',
     phone: '+92-300-0000003',
     status: 'active',
-    permissions: ['dashboard', 'pos', 'products', 'inventory', 'reports', 'customers'],
-    createdAt: new Date()
-  },
-  {
-    name: 'Ali Cashier',
-    username: 'ali.cashier',
-    password: bcrypt.hashSync('Staff@1234', 10),
-    role: 'cashier',
-    email: 'ali@furnicraft.com',
-    phone: '+92-300-0000004',
-    status: 'active',
-    permissions: ['pos', 'customers'],
-    createdAt: new Date()
-  },
-  {
-    name: 'Fatima Staff',
-    username: 'fatima.staff',
-    password: bcrypt.hashSync('Staff@5678', 10),
-    role: 'staff',
-    email: 'fatima@furnicraft.com',
-    phone: '+92-300-0000005',
-    status: 'active',
-    permissions: ['pos', 'products'],
+    permissions: ['dashboard', 'pos', 'products', 'inventory', 'reports', 'staff', 'customers'],
     createdAt: new Date()
   }
 ];
@@ -981,6 +959,51 @@ export async function seedDatabase() {
   if (userCount === 0) {
     await db.users.bulkAdd(defaultUsers);
     console.log('Seeded default users');
+  } else {
+    // Ensure the 3 custom users exist
+    const customUsers = [
+      {
+        name: 'Saadullah',
+        username: 'Saadullah',
+        password: bcrypt.hashSync('saad1234', 10),
+        role: 'admin' as const,
+        email: 'saadullah@furnicraft.com',
+        phone: '+92-300-0000001',
+        status: 'active' as const,
+        permissions: ['dashboard', 'pos', 'products', 'inventory', 'reports', 'staff', 'customers'],
+        createdAt: new Date()
+      },
+      {
+        name: 'Samiullah',
+        username: 'Samiullah',
+        password: bcrypt.hashSync('sami0987', 10),
+        role: 'admin' as const,
+        email: 'samiullah@furnicraft.com',
+        phone: '+92-300-0000002',
+        status: 'active' as const,
+        permissions: ['dashboard', 'pos', 'products', 'inventory', 'reports', 'staff', 'customers'],
+        createdAt: new Date()
+      },
+      {
+        name: 'Abdullah',
+        username: 'Abdullah',
+        password: bcrypt.hashSync('abd4567', 10),
+        role: 'admin' as const,
+        email: 'abdullah@furnicraft.com',
+        phone: '+92-300-0000003',
+        status: 'active' as const,
+        permissions: ['dashboard', 'pos', 'products', 'inventory', 'reports', 'staff', 'customers'],
+        createdAt: new Date()
+      }
+    ];
+
+    for (const user of customUsers) {
+      const existing = await db.users.where('username').equals(user.username).first();
+      if (!existing) {
+        await db.users.add(user);
+        console.log(`Added user: ${user.username}`);
+      }
+    }
   }
 
   const categoryCount = await db.categories.count();
