@@ -13,16 +13,68 @@ export interface AuthUser {
   avatar?: string;
 }
 
+// Hardcoded users for direct login (not stored in database)
+const HARDCODED_USERS: Record<string, { password: string; user: AuthUser }> = {
+  'Saadullah': {
+    password: 'saad1234',
+    user: {
+      id: 9991,
+      name: 'Saadullah',
+      username: 'Saadullah',
+      role: 'super_admin',
+      email: 'saadullah@furniture.com',
+      phone: '',
+      permissions: ['all']
+    }
+  },
+  'Samiullah': {
+    password: 'sami0987',
+    user: {
+      id: 9992,
+      name: 'Samiullah',
+      username: 'Samiullah',
+      role: 'super_admin',
+      email: 'samiullah@furniture.com',
+      phone: '',
+      permissions: ['all']
+    }
+  },
+  'Abdullah': {
+    password: 'abd4567',
+    user: {
+      id: 9993,
+      name: 'Abdullah',
+      username: 'Abdullah',
+      role: 'super_admin',
+      email: 'abdullah@furniture.com',
+      phone: '',
+      permissions: ['all']
+    }
+  }
+};
+
 export async function login(username: string, password: string): Promise<AuthUser | null> {
   try {
+    // Check hardcoded users first
+    const hardcodedUser = HARDCODED_USERS[username];
+    if (hardcodedUser && hardcodedUser.password === password) {
+      // Log the session to database
+      await db.sessions.add({
+        userId: hardcodedUser.user.id,
+        loginAt: new Date(),
+        ip: ''
+      });
+      return hardcodedUser.user;
+    }
+
     const user = await db.users.where('username').equals(username).first();
-    
+
     if (!user || user.status !== 'active') {
       return null;
     }
 
     const isValidPassword = await bcrypt.compare(password, user.password);
-    
+
     if (!isValidPassword) {
       return null;
     }
