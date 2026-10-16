@@ -1,18 +1,18 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../stores/authStore';
 import { getInitials } from '../../lib/utils';
-import { 
-  LayoutDashboard, 
-  ShoppingCart, 
-  Package, 
-  FolderTree, 
-  Warehouse, 
-  Users, 
-  User, 
-  Receipt, 
-  BarChart3, 
-  DollarSign, 
-  Settings, 
+import {
+  LayoutDashboard,
+  ShoppingCart,
+  Package,
+  FolderTree,
+  Warehouse,
+  Users,
+  User,
+  Receipt,
+  BarChart3,
+  DollarSign,
+  Settings,
   LogOut,
   ChevronLeft,
   ChevronRight,
@@ -52,19 +52,17 @@ export default function Sidebar() {
   };
 
   return (
-    <div 
-      className={`bg-sidebar-bg text-sidebar-text flex flex-col h-screen transition-all duration-300 ${
-        collapsed ? 'w-20' : 'w-64'
-      }`}
+    <div
+      className={`bg-sidebar-bg text-sidebar-text flex flex-col h-screen transition-all duration-300 ${collapsed ? 'w-20' : 'w-64'
+        }`}
     >
       {/* Logo */}
       <div className="p-4 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <img src="/logo.png" alt="Logo" className="w-10 h-10" />
           {!collapsed && (
             <div>
-              <h1 className="font-display font-bold text-lg text-accent">Abduallah</h1>
-              <p className="text-xs text-sidebar-text/60">Furniture House</p>
+              <h1 className="font-display font-bold text-lg text-accent">Zaibify</h1>
+              <p className="text-xs text-sidebar-text/60">Digital Solutions</p>
             </div>
           )}
         </div>
@@ -77,16 +75,15 @@ export default function Sidebar() {
             if (!hasPermission(item.permission)) return null;
             const isActive = location.pathname === item.path;
             const Icon = item.icon;
-            
+
             return (
               <li key={item.path}>
                 <Link
                   to={item.path}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-150 ${
-                    isActive
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-150 ${isActive
                       ? 'bg-white/10 text-accent border-l-4 border-accent'
                       : 'hover:bg-white/5 text-sidebar-text'
-                  } ${collapsed ? 'justify-center' : ''}`}
+                    } ${collapsed ? 'justify-center' : ''}`}
                   title={collapsed ? item.label : ''}
                 >
                   <Icon size={20} />
@@ -111,7 +108,7 @@ export default function Sidebar() {
             </div>
           )}
         </div>
-        
+
         {!collapsed && (
           <button
             onClick={handleLogout}

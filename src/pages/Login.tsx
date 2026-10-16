@@ -40,13 +40,10 @@ export default function Login() {
     <div className="min-h-screen bg-primary flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <img src="/logo.png" alt="Abduallah Furniture House" className="w-24 h-24" />
-          </div>
           <h1 className="text-3xl font-display font-bold text-accent mb-2">
-            Abduallah Furniture House
+            Zaibify Digital Solutions
           </h1>
-          <p className="text-sidebar-text">Premium Furniture Management System</p>
+          <p className="text-sidebar-text">Professional Point of Sale System</p>
         </div>
 
         <Card className="bg-white/95 backdrop-blur-sm shadow-xl">
@@ -105,7 +102,7 @@ export default function Login() {
         </Card>
 
         <p className="text-center text-sidebar-text/60 text-sm mt-6">
-          © 2024 Abduallah Furniture House. All rights reserved.
+          © 2025 Zaibify Digital Solutions. All rights reserved.
         </p>
       </div>
     </div>

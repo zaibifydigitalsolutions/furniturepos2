@@ -18,6 +18,7 @@ export default {
         },
         surface: {
           DEFAULT: '#FAFAF9',
+          
           2: '#F5F5F4',
           3: '#E7E5E4',
         },
