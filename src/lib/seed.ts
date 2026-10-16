@@ -1022,9 +1022,9 @@ export async function seedDatabase() {
   if (settingsCount === 0) {
     await db.settings.bulkAdd([
       { key: 'taxRate', value: '17' },
-      { key: 'businessName', value: 'FurniCraft Furniture' },
-      { key: 'receiptHeader', value: 'Thank you for shopping with FurniCraft!' },
-      { key: 'receiptFooter', value: 'Visit us at www.furnicraft.com' },
+      { key: 'businessName', value: 'Zaibify Digital Solutions' },
+      { key: 'receiptHeader', value: 'Thank you for shopping with Zaibify Digital Solutions!' },
+      { key: 'receiptFooter', value: 'Zaibify Digital Solutions - Professional POS' },
       { key: 'currency', value: 'PKR' }
     ]);
     console.log('Seeded default settings');

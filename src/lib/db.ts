@@ -149,7 +149,7 @@ export interface Session {
   ip?: string;
 }
 
-export class FurniCraftDB extends Dexie {
+export class ZaibifyDB extends Dexie {
   users!: Table<User>;
   categories!: Table<Category>;
   products!: Table<Product>;
@@ -162,8 +162,8 @@ export class FurniCraftDB extends Dexie {
   sessions!: Table<Session>;
 
   constructor() {
-    super('FurniCraftPOS');
-    
+    super('ZaibifyPOS');
+
     this.version(1).stores({
       users: '++id, username, role, email, status, createdAt',
       categories: '++id, name, status, sortOrder',
@@ -179,4 +179,4 @@ export class FurniCraftDB extends Dexie {
   }
 }
 
-export const db = new FurniCraftDB();
+export const db = new ZaibifyDB();
