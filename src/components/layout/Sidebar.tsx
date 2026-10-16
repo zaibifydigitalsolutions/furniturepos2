@@ -59,6 +59,7 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="p-4 border-b border-white/10">
         <div className="flex items-center gap-3">
+          <img src="/logo.png" alt="Zaibify" className="w-10 h-10 rounded-lg" />
           {!collapsed && (
             <div>
               <h1 className="font-display font-bold text-lg text-accent">Zaibify</h1>
@@ -81,8 +82,8 @@ export default function Sidebar() {
                 <Link
                   to={item.path}
                   className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-150 ${isActive
-                      ? 'bg-white/10 text-accent border-l-4 border-accent'
-                      : 'hover:bg-white/5 text-sidebar-text'
+                    ? 'bg-white/10 text-accent border-l-4 border-accent'
+                    : 'hover:bg-white/5 text-sidebar-text'
                     } ${collapsed ? 'justify-center' : ''}`}
                   title={collapsed ? item.label : ''}
                 >

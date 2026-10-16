@@ -86,7 +86,7 @@ export default function Sales() {
       </head>
       <body>
         <div class="header">
-          <h1>FurniCraft Furniture</h1>
+          <h1>Zaibify Digital Solutions</h1>
           <p>Receipt</p>
         </div>
         <div class="info">
@@ -117,7 +117,7 @@ export default function Sales() {
         </div>
         <div class="footer">
           <p>Thank you for shopping with us!</p>
-          <p>Visit us at www.furnicraft.com</p>
+          <p>Zaibify Digital Solutions</p>
         </div>
       </body>
       </html>
@@ -158,7 +158,7 @@ export default function Sales() {
                 <span className="font-medium">{getCustomerName(viewingSale.customerId)}</span>
               </div>
               <p className="text-sm text-text-secondary">{formatDateTime(viewingSale.createdAt)}</p>
-              
+
               <div className="border-t border-border pt-3">
                 <p className="font-medium text-sm mb-2">Items ({viewingSale.items.length})</p>
                 {viewingSale.items.map((item, idx) => (
@@ -247,11 +247,10 @@ export default function Sales() {
                     <td className="p-4 font-bold text-sm text-right">{formatCurrency(sale.total)}</td>
                     <td className="p-4 text-sm capitalize">{sale.paymentMethod}</td>
                     <td className="p-4">
-                      <span className={`px-2 py-1 rounded-full text-xs ${
-                        sale.status === 'completed' ? 'bg-success/10 text-success' :
-                        sale.status === 'cancelled' ? 'bg-danger/10 text-danger' :
-                        'bg-warning/10 text-warning'
-                      }`}>
+                      <span className={`px-2 py-1 rounded-full text-xs ${sale.status === 'completed' ? 'bg-success/10 text-success' :
+                          sale.status === 'cancelled' ? 'bg-danger/10 text-danger' :
+                            'bg-warning/10 text-warning'
+                        }`}>
                         {sale.status}
                       </span>
                     </td>

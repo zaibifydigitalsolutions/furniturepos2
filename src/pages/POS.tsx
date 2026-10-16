@@ -20,7 +20,7 @@ export default function POS() {
   const [isNewCustomer, setIsNewCustomer] = useState(false);
   const [installPrompt, setInstallPrompt] = useState<any>(null);
   const [showInstallBtn, setShowInstallBtn] = useState(false);
-  
+
   const {
     items,
     discount,
@@ -42,7 +42,7 @@ export default function POS() {
     getTotal,
     getChange,
   } = useCartStore();
-  
+
   const { user } = useAuthStore();
 
   useEffect(() => {
@@ -80,7 +80,7 @@ export default function POS() {
 
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         product.sku.toLowerCase().includes(searchQuery.toLowerCase());
+      product.sku.toLowerCase().includes(searchQuery.toLowerCase());
     // When searching, show all matching products regardless of category
     // When not searching, filter by selected category
     if (searchQuery.trim() !== '') {
@@ -158,7 +158,7 @@ export default function POS() {
       };
 
       const saleId = await db.sales.add(sale);
-      
+
       // Add sale items
       for (const item of items) {
         await db.saleItems.add({
@@ -179,7 +179,7 @@ export default function POS() {
 
       // Get customer details
       const customer = customers.find(c => c.id === selectedCustomer);
-      
+
       // Print receipt
       printReceipt({
         invoiceNo,
@@ -248,7 +248,7 @@ export default function POS() {
       <body>
         <div class="receipt">
           <div class="shop-header">
-            <div class="shop-name">Abduallah Furniture House</div>
+            <div class="shop-name">Zaibify Digital Solutions</div>
             <div class="copy-type">POS Receipt</div>
           </div>
 
@@ -307,7 +307,7 @@ export default function POS() {
 
           <div class="footer">
             <div>Thank you for shopping with us!</div>
-            <div>Abduallah Furniture House</div>
+            <div>Zaibify Digital Solutions</div>
             <div style="margin-top:4px;">Exchange within 7 days with receipt</div>
           </div>
         </div>
@@ -370,14 +370,14 @@ export default function POS() {
         {/* Products */}
         <div className="flex-1 overflow-y-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filteredProducts.map(product => (
-            <Card 
-              key={product.id} 
+            <Card
+              key={product.id}
               className="cursor-pointer hover:shadow-lg transition-shadow"
               onClick={() => handleAddToCart(product)}
             >
               <CardContent className="p-4">
                 <div className="aspect-square bg-surface-2 rounded-lg mb-3 flex items-center justify-center">
-                  <img src="/logo.png" alt="Product" className="w-16 h-16 opacity-50" />
+                  <img src="/logo.png" alt="Product" className="w-16 h-16 rounded-lg" />
                 </div>
                 <h3 className="font-medium text-sm line-clamp-2">{product.name}</h3>
                 <p className="text-xs text-text-secondary">{product.sku}</p>
@@ -402,19 +402,19 @@ export default function POS() {
               Clear
             </Button>
           </CardHeader>
-          
+
           <CardContent className="flex-1 flex flex-col overflow-hidden">
             {/* Customer Selection */}
             <div className="mb-4">
               <div className="flex gap-2 mb-2">
                 <button
-                  onClick={() => {setIsNewCustomer(false);setSelectedCustomer(undefined);}}
+                  onClick={() => { setIsNewCustomer(false); setSelectedCustomer(undefined); }}
                   className={`flex-1 px-3 py-1.5 text-xs font-medium rounded ${!isNewCustomer ? 'bg-accent text-primary' : 'bg-surface-2 text-text-secondary'}`}
                 >
                   Existing Customer
                 </button>
                 <button
-                  onClick={() => {setIsNewCustomer(true);setSelectedCustomer(undefined);}}
+                  onClick={() => { setIsNewCustomer(true); setSelectedCustomer(undefined); }}
                   className={`flex-1 px-3 py-1.5 text-xs font-medium rounded ${isNewCustomer ? 'bg-accent text-primary' : 'bg-surface-2 text-text-secondary'}`}
                 >
                   New Customer
@@ -423,7 +423,7 @@ export default function POS() {
               {!isNewCustomer ? (
                 <select
                   value={selectedCustomer || ''}
-                  onChange={(e) => {setSelectedCustomer(e.target.value ? Number(e.target.value) : undefined);setCustomerId(e.target.value ? Number(e.target.value) : undefined);}}
+                  onChange={(e) => { setSelectedCustomer(e.target.value ? Number(e.target.value) : undefined); setCustomerId(e.target.value ? Number(e.target.value) : undefined); }}
                   className="w-full px-3 py-2 border border-border rounded-lg"
                 >
                   <option value="">Select Customer *</option>
@@ -436,19 +436,19 @@ export default function POS() {
                   <Input
                     placeholder="Customer Name *"
                     value={newCustomer.name}
-                    onChange={(e) => setNewCustomer({...newCustomer, name: e.target.value})}
+                    onChange={(e) => setNewCustomer({ ...newCustomer, name: e.target.value })}
                     className="text-sm"
                   />
                   <Input
                     placeholder="Phone Number *"
                     value={newCustomer.phone}
-                    onChange={(e) => setNewCustomer({...newCustomer, phone: e.target.value})}
+                    onChange={(e) => setNewCustomer({ ...newCustomer, phone: e.target.value })}
                     className="text-sm"
                   />
                   <Input
                     placeholder="Address *"
                     value={newCustomer.address}
-                    onChange={(e) => setNewCustomer({...newCustomer, address: e.target.value})}
+                    onChange={(e) => setNewCustomer({ ...newCustomer, address: e.target.value })}
                     className="text-sm"
                   />
                 </div>
@@ -566,8 +566,8 @@ export default function POS() {
                 </div>
               )}
 
-              <Button 
-                className="w-full" 
+              <Button
+                className="w-full"
                 size="lg"
                 onClick={handleCompleteSale}
                 disabled={items.length === 0}
