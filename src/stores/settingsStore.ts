@@ -17,9 +17,9 @@ interface SettingsState extends Settings {
 }
 
 const defaultSettings: Settings = {
-  businessName: 'FurniCraft Furniture',
-  receiptHeader: 'Thank you for shopping with FurniCraft!',
-  receiptFooter: 'Visit us at www.furnicraft.com',
+  businessName: 'Zaibify Digital Solutions',
+  receiptHeader: 'Thank you for shopping with Zaibify Digital Solutions!',
+  receiptFooter: 'Zaibify Digital Solutions - Professional POS',
   currency: 'PKR',
   lowStockAlert: 10,
   autoPrint: true,
@@ -35,7 +35,7 @@ export const useSettingsStore = create<SettingsState>()(
       resetSettings: () => set(defaultSettings),
     }),
     {
-      name: 'furnicraft-settings',
+      name: 'zaibify-settings',
     }
   )
 );
