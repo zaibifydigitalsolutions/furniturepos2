@@ -59,11 +59,11 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="p-4 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <img src="/logo.png" alt="Zaibify" className="w-10 h-10 rounded-lg" />
+          <img src="/logo.png" alt="Abdullah Furniture House" className="w-24 h-24 rounded-xl" />
           {!collapsed && (
             <div>
-              <h1 className="font-display font-bold text-lg text-accent">Zaibify</h1>
-              <p className="text-xs text-sidebar-text/60">Digital Solutions</p>
+              <h1 className="font-display font-bold text-lg text-accent">Abdullah Furniture House</h1>
+              <p className="text-xs text-sidebar-text/60">Furniture House</p>
             </div>
           )}
         </div>

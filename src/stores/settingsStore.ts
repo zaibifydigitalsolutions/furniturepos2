@@ -17,9 +17,9 @@ interface SettingsState extends Settings {
 }
 
 const defaultSettings: Settings = {
-  businessName: 'Zaibify Digital Solutions',
-  receiptHeader: 'Thank you for shopping with Zaibify Digital Solutions!',
-  receiptFooter: 'Zaibify Digital Solutions - Professional POS',
+  businessName: 'Abdullah Furniture House',
+  receiptHeader: 'Thank you for shopping with Abdullah Furniture House!',
+  receiptFooter: 'Abdullah Furniture House - Professional POS',
   currency: 'PKR',
   lowStockAlert: 10,
   autoPrint: true,

@@ -39,7 +39,7 @@ export default function TopBar() {
     <header className="bg-white border-b border-border h-16 flex items-center justify-between px-6">
       <div className="flex items-center gap-4">
         <h1 className="text-xl font-display font-semibold text-primary">
-          Zaibify Digital Solutions
+          Abdullah Furniture House
         </h1>
         {showInstallBtn && (
           <button
