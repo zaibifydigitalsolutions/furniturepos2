@@ -41,10 +41,10 @@ export default function Login() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
-            <img src="/logo.png" alt="Zaibify Digital Solutions" className="w-24 h-24 rounded-xl" />
+            <img src="/logo.png" alt="Abdullah Furniture House" className="w-24 h-24 rounded-xl" />
           </div>
           <h1 className="text-3xl font-display font-bold text-accent mb-2">
-            Zaibify Digital Solutions
+            Abdullah Furniture House
           </h1>
           <p className="text-sidebar-text">Professional Point of Sale System</p>
         </div>
@@ -105,7 +105,7 @@ export default function Login() {
         </Card>
 
         <p className="text-center text-sidebar-text/60 text-sm mt-6">
-          © 2025 Zaibify Digital Solutions. All rights reserved.
+          © 2025 Abdullah Furniture House. All rights reserved.
         </p>
       </div>
     </div>
